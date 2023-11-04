@@ -29,7 +29,7 @@ namespace Cards
             var incrementVector = -0.5f;
             foreach (var card in cardsPattern)
             {
-                card.SetActive(false);
+                
                 var spawnedCard = Instantiate(card, transform.position + new Vector3(1,0,0) * incrementVector, Quaternion.Euler(-90,-90,0));
                 cardInstances.Add(spawnedCard);
                 _singleCardControllersDict.Add(spawnedCard, spawnedCard.GetComponent<Card>()); // store the gameObject (automatically convert to hash) as key and set controller as value
@@ -37,6 +37,9 @@ namespace Cards
             }
         }
     
+        /// <summary>
+        /// Spawn cards 
+        /// </summary>
         public IEnumerator SpawnCards()
         {
             foreach (var card in cardInstances)

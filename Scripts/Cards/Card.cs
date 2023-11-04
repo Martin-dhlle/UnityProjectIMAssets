@@ -9,7 +9,7 @@ namespace Cards
         public TMP_Text textCardName,textForce, textType;
         public string CardName { get; set; } = "default";
         public int Force { get; set; }
-        public ICard.Type Type { get; set; }
+        public ICard.TypeEnum Type { get; set; }
 
         private void Start()
         {

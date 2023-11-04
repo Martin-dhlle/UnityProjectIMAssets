@@ -7,7 +7,9 @@
         
         public int Force { get; set; }
         
-        public enum Type
+        public TypeEnum Type { get; set; }
+
+        public enum TypeEnum
         {
             Thrust,
             Slash,

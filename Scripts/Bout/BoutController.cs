@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Cards.Json;
 using Newtonsoft.Json;
@@ -10,21 +11,25 @@ namespace Bout
     public class BoutController : MonoBehaviour
     {
         public TextAsset patternJson;
-        public List<GameObject> cardsPattern;
-        public GameObject cardsControllerObject, battleCamera;
+        public GameObject cardsControllerObject, cardPrefab, battleCamera;
+
+        private Card _cardPrefabData;
         private CardsController _cardsController;
+        private GameObject _cardsControllerInstance;
+        private Dictionary<int, List<GameObject>> _allCardsPattern = new();
     
         public int boutNumber;
-        public bool boutLost, boutVictory;
+        public bool boutLost, boutVictory, canPassRound;
         public float cameraVelocity;
         
         private Camera _camera;
         private Vector3 _camStartPos;
+        
+        private int _roundCount;
 
         private enum BoutStateEnum
         {
             Introduction,
-            SpawnCards,
             Battle
         }
 
@@ -55,34 +60,36 @@ namespace Bout
                 MoveUntilCoordinate(transform.position);
             }
         
-        
-            // If the camera stop moving and introduction is over, so cards can begin to spawn.
-            if (_boutState == BoutStateEnum.SpawnCards)
+            if (canPassRound && _boutState == BoutStateEnum.Battle)
             {
-                StartBattle();
-            }
-        
-            if (_boutState == BoutStateEnum.Battle)
-            {
-            
+                StartRound();
             }
         }
-
-        /**
-     * Get all pattern data from JSON file attach to BoutController object and attribute these data to each commands.
-     */
+        
+        /// <summary>
+        /// Get all pattern data from JSON files attached to BoutController object and attribute these data to each commands.
+        /// </summary>
         private void DefineMonsterCardsPattern()
         {
-            var pattern = JsonConvert.DeserializeObject<JsonPattern>(patternJson.text);
-            Debug.Log(pattern);
-            foreach (var command in pattern.Patterns)
+            cardPrefab.SetActive(false);
+            _cardPrefabData = cardPrefab.GetComponent<Card>();
+            var patterns = JsonConvert.DeserializeObject<JsonPattern>(patternJson.text);
+            foreach (var pattern in patterns.Patterns)
             {
-                Debug.Log(command.Key);
+                var list = new List<GameObject>();
+                foreach (var cardData in pattern.Value)
+                {
+                    if (!Enum.TryParse<ICard.TypeEnum>(cardData.Type, out var type)) return;
+                    (_cardPrefabData.CardName, _cardPrefabData.Force, _cardPrefabData.Type) 
+                        = (cardData.CardName, cardData.Force, type);
+                    list.Add(cardPrefab);
+                }
+                
+                _allCardsPattern.Add(int.Parse(pattern.Key), list);
             }
+            
             var cardsControllerInstance = Instantiate(cardsControllerObject, transform.position + new Vector3(0,-1f,3) , Quaternion.identity);
             _cardsController = cardsControllerInstance.GetComponent<CardsController>();
-            _cardsController.cardsPattern = cardsPattern;
-            cardsControllerInstance.SetActive(true);
         }
 
         /// <summary>
@@ -102,20 +109,22 @@ namespace Bout
         
             cameraPosition = new Vector3(coordinateToReach.x, coordinateToReach.y, clampedCoordinateZ);
             _camera.transform.position = cameraPosition;
-            if (Math.Abs(coordinateToReach.z - clampedCoordinateZ) < 0.1) _boutState = BoutStateEnum.SpawnCards;
+            if (Math.Abs(coordinateToReach.z - clampedCoordinateZ) < 0.1) _boutState = BoutStateEnum.Battle;
         }
 
-        /* private IEnumerator ShowIntroductionTextAndSpawnCards()
-    {
-        Debug.Log("5 seconds to wait...");
-        yield return new WaitForSeconds(5);
-        _cardsController.SpawnCards();
-    } */
-
-        private void StartBattle()
+        /// <summary>
+        /// Increment the round
+        /// </summary>
+        private void StartRound()
         {
+            _roundCount++;
+            // Define cardsPattern of the cards controller based on the roundCount value
+            _cardsControllerInstance.SetActive(false);
+            _cardsController.cardsPattern = _allCardsPattern[_roundCount];
+            _cardsControllerInstance.SetActive(true);
+            // Spawn cards
             StartCoroutine(_cardsController.SpawnCards());
-            _boutState = BoutStateEnum.Battle;
+            canPassRound = false;
         }
     }
 }
