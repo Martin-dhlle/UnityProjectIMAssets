@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7583890685650456863}
-  - component: {fileID: 12823608630783783}
+  - component: {fileID: 1822766013934812111}
   m_Layer: 0
-  m_Name: Bout Controller
+  m_Name: CardsController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &12823608630783783
+--- !u!114 &1822766013934812111
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,8 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5998187101678849310}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef4c9e8edc6b18d4aab001960b820c31, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a55e15e313da4176a82fe2700cceaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsController: {fileID: 5205759159120169380, guid: 3947d962c10635243a57cfc09fc7141c, type: 3}
-  cameraVelocity: 15
+  cardsPattern: []
+  cardInstances: []

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7583890685650456863}
   - component: {fileID: 12823608630783783}
   m_Layer: 0
-  m_Name: Bout Controller
+  m_Name: BoutController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,8 +41,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5998187101678849310}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef4c9e8edc6b18d4aab001960b820c31, type: 3}
+  m_Script: {fileID: 11500000, guid: 20586b362f03c4d43998905ce5b52dfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsController: {fileID: 5205759159120169380, guid: 3947d962c10635243a57cfc09fc7141c, type: 3}
-  cameraVelocity: 15
+  patternJson: {fileID: 4900000, guid: 1a39e4954707a4a1c8dbe540df33cefb, type: 3}
+  cardsPattern: []
+  cardsControllerObject: {fileID: 0}
+  battleCamera: {fileID: 0}
+  boutNumber: 0
+  boutLost: 0
+  boutVictory: 0
+  cameraVelocity: 0

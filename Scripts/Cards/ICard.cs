@@ -1,4 +1,4 @@
-﻿namespace Interfaces
+﻿namespace Cards
 {
     public interface ICard
     {

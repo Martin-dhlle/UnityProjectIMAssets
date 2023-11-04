@@ -53,7 +53,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Card Animator
+  m_Name: AC_Card
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -89,7 +89,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 024ea186a22bec045a44b3efcbac3b66, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2ce59326c39944c75aba9167963cd36d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -116,7 +116,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -4017167365905858723, guid: 286b297b98cf11d47bce522d460e74ce, type: 3}
+  m_Motion: {fileID: -4017167365905858723, guid: 1e13aec40df1d40818dd255c3e58c459, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

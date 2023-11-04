@@ -1,0 +1,42 @@
+{
+  "patterns": [
+    {
+      "1":[
+        {
+          "CardName": "default1",
+          "Force": 10,
+          "Type": "Thrust"
+        },
+        {
+          "cardName": "default2",
+          "Force": 50,
+          "Type": "Slash"
+        },
+        {
+          "cardName": "default3",
+          "Force": 30,
+          "Type": "Bash"
+        }
+      ],
+      "2": [
+        {
+          "CardName": "default1",
+          "Force": 10,
+          "Type": "Thrust"
+        },
+        {
+          "cardName": "default2",
+          "Force": 50,
+          "Type": "Slash"
+        },
+        {
+          "cardName": "default3",
+          "Force": 30,
+          "Type": "Bash"
+        }
+      ]
+    }]
+
+  
+  
+}
