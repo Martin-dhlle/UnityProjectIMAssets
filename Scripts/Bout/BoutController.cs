@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Cards;
+using Cards.Json;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Bout
@@ -71,10 +73,11 @@ namespace Bout
      */
         private void DefineMonsterCardsPattern()
         {
-            var pattern = JsonUtility.FromJson<ICard[]>(patternJson.text);
-            foreach (var command in pattern)
+            var pattern = JsonConvert.DeserializeObject<JsonPattern>(patternJson.text);
+            Debug.Log(pattern);
+            foreach (var command in pattern.Patterns)
             {
-                Debug.Log(pattern);
+                Debug.Log(command.Key);
             }
             var cardsControllerInstance = Instantiate(cardsControllerObject, transform.position + new Vector3(0,-1f,3) , Quaternion.identity);
             _cardsController = cardsControllerInstance.GetComponent<CardsController>();
