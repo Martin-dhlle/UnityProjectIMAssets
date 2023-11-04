@@ -16,7 +16,8 @@ namespace Bout
         private Card _cardPrefabData;
         private CardsController _cardsController;
         private GameObject _cardsControllerInstance;
-        private Dictionary<int, List<GameObject>> _allCardsPattern = new();
+        private readonly Dictionary<int, List<GameObject>> _allCardsPattern = new();
+        private readonly Dictionary<GameObject, Card> _cardsToRetrieveFromObject = new();
     
         public int boutNumber;
         public bool boutLost, boutVictory, canPassRound;
@@ -30,7 +31,8 @@ namespace Bout
         private enum BoutStateEnum
         {
             Introduction,
-            Battle
+            Preparation,
+            Battle,
         }
 
         private BoutStateEnum _boutState;
@@ -59,10 +61,15 @@ namespace Bout
             {
                 MoveUntilCoordinate(transform.position);
             }
+            
+            if (_boutState == BoutStateEnum.Preparation)
+            {
+                
+            }
         
             if (canPassRound && _boutState == BoutStateEnum.Battle)
             {
-                StartRound();
+                StartNextRound();
             }
         }
         
@@ -82,6 +89,7 @@ namespace Bout
                     if (!Enum.TryParse<ICard.TypeEnum>(cardData.Type, out var type)) return;
                     (_cardPrefabData.CardName, _cardPrefabData.Force, _cardPrefabData.Type) 
                         = (cardData.CardName, cardData.Force, type);
+                    _cardsToRetrieveFromObject.Add(cardPrefab, _cardPrefabData);
                     list.Add(cardPrefab);
                 }
                 
@@ -109,21 +117,19 @@ namespace Bout
         
             cameraPosition = new Vector3(coordinateToReach.x, coordinateToReach.y, clampedCoordinateZ);
             _camera.transform.position = cameraPosition;
-            if (Math.Abs(coordinateToReach.z - clampedCoordinateZ) < 0.1) _boutState = BoutStateEnum.Battle;
+            if (Math.Abs(coordinateToReach.z - clampedCoordinateZ) < 0.1) _boutState = BoutStateEnum.Preparation;
         }
 
         /// <summary>
         /// Increment the round
         /// </summary>
-        private void StartRound()
+        private void StartNextRound()
         {
             _roundCount++;
-            // Define cardsPattern of the cards controller based on the roundCount value
-            _cardsControllerInstance.SetActive(false);
-            _cardsController.cardsPattern = _allCardsPattern[_roundCount];
-            _cardsControllerInstance.SetActive(true);
-            // Spawn cards
-            StartCoroutine(_cardsController.SpawnCards());
+            
+            // Define cardsPattern of the cards controller based on the roundCount value and replace cards
+            var replacementCards = _allCardsPattern[_roundCount].Select(cardObject => _cardsToRetrieveFromObject[cardObject]).ToList();
+            StartCoroutine(_cardsController.ChangeCards(replacementCards));
             canPassRound = false;
         }
     }
