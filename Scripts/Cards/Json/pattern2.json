@@ -1,0 +1,20 @@
+{
+  "cards": 
+  [
+    {
+      "cardName": "default1",
+      "Force": 10,
+      "Type": "Thrust"
+    },
+    {
+      "cardName": "default2",
+      "Force": 50,
+      "Type": "Slash"
+    },
+    {
+      "cardName": "default2",
+      "Force": 30,
+      "Type": "Bash"
+    }
+  ]
+}

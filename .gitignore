@@ -1,0 +1,6 @@
+# Files to ignore
+*.png
+*.jpg
+*.meta
+*.mp3
+*.DS_Store
