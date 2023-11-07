@@ -15,7 +15,7 @@ namespace HelperScripts
         {
             var instanceGUI = Object.Instantiate(gameObjectGUI, cameraFromScene.transform);
             instanceGUI.transform.localPosition += Vector3.forward * 5;
-            return gameObjectGUI.GetComponent<T>();
+            return instanceGUI.GetComponent<T>();
         }
     }
 }

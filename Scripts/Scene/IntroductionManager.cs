@@ -7,8 +7,9 @@ namespace Scene
     {
         private SceneController _sceneController;
         
-        public GameObject introductionGUI;
         public Transform coordinatesToEndIntro;
+        public GameObject introductionGUI;
+        
         private IntroductionGUI _introductionGUIController;
         private Camera _camera;
 
@@ -16,10 +17,6 @@ namespace Scene
         {
             _camera = Camera.main;
             _sceneController = GetComponent<SceneController>();
-        }
-
-        private void Start()
-        {
             _introductionGUIController = HelperScripts.UI.InstantiateGUI<IntroductionGUI>(introductionGUI, _camera);
             _introductionGUIController.CoordinatesToEndIntro = coordinatesToEndIntro;
         }

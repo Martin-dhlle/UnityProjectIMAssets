@@ -16,6 +16,7 @@ namespace Scene
         private void Awake()
         {
             _introductionManager = GetComponent<IntroductionManager>();
+            _stageManager = GetComponent<StageManager>();
         }
 
         private void Start()

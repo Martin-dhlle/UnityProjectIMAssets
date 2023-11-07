@@ -51,7 +51,7 @@ namespace Cards
             if (Physics.Raycast(ray, out var hit))
             {
                 var card = _cardsDataDict[hit.transform.gameObject];
-                Debug.Log($"{card.Force} {card.CardName} {card.Type}");
+                Debug.Log($"{card.Force} {card.Type}");
             }
         }
 
@@ -73,12 +73,11 @@ namespace Cards
                 _cardsAnimatorsDict[cardData.Key].SetBool(IsSpawn, false);
                 
                 var replacementCard = replacementCardsData[index];
-                (cardData.Value.CardName, cardData.Value.Force, cardData.Value.Type) = 
-                    (replacementCard.CardName, replacementCard.Force, replacementCard.Type);
+                (cardData.Value.Force, cardData.Value.Type) = 
+                    (replacementCard.Force, replacementCard.Type);
                 
                 _cardsAnimatorsDict[cardData.Key].SetBool(IsSpawn, true);
                 cardData.Key.SetActive(true);
-                
                 index++;
                 yield return new WaitForSeconds(1);
             }

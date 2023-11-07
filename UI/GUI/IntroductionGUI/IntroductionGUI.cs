@@ -37,7 +37,11 @@ namespace UI.GUI.IntroductionGUI
         {
             if (!firstSplashScreen.activeSelf) return;
             MoveText();
-            CheckIntroState();
+        }
+
+        private void FixedUpdate()
+        {
+            CheckRaycast();
         }
 
         private IEnumerator StartIntroduction()
@@ -75,9 +79,24 @@ namespace UI.GUI.IntroductionGUI
             firstSplashScreen.transform.localPosition = textTransformPosition;
         }
 
-        private void CheckIntroState()
+        /// <summary>
+        /// Check if a sphere cast trigger the gameObject in scene (CoordinatesToEndIntro) on the layer 5 (UI layer)
+        /// by binary shifting, then set isIntroOver to true if the trigger is successful.
+        /// </summary>
+        private void CheckRaycast()
         {
-            if(!(Mathf.Round(_camera.transform.position.z) < Mathf.Floor(CoordinatesToEndIntro.position.z))) isIntroOver = true;
+            var mask = 1 << LayerMask.NameToLayer("UI");
+            
+            if (!Physics.SphereCast(
+                    _camera.transform.position,
+                    10,
+                    _camera.transform.forward,
+                    out var hit,
+                    float.PositiveInfinity,
+                    mask
+                ) || hit.transform != CoordinatesToEndIntro) return;
+            
+            isIntroOver = true;
         }
     }
 }

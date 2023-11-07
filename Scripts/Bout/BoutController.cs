@@ -98,8 +98,8 @@ namespace Bout
                     var cardInstance = Instantiate(cardPrefab);
                     var cardInstanceData = cardInstance.GetComponent<Card>();
                     if (!Enum.TryParse<ICard.TypeEnum>(cardData.Type, out var type)) return;
-                    (cardInstanceData.CardName, cardInstanceData.Force, cardInstanceData.Type) 
-                        = (cardData.CardName, cardData.Force, type);
+                    (cardInstanceData.Force, cardInstanceData.Type) 
+                        = (cardData.Force, type);
                     _cardsToRetrieveFromObject.Add(cardInstance, cardInstanceData);
                     list.Add(cardInstance);
                     Destroy(cardInstance);
