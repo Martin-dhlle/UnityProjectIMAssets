@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a55e15e313da4176a82fe2700cceaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsPattern: []
-  cardInstances: []
+  cardPrefab: {fileID: 9117526733267939453, guid: 4c67febf14bb84f32bb2c5bd0f42d813, type: 3}
+  cardsNumberInSet: 3

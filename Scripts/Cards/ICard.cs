@@ -1,6 +1,6 @@
 ﻿namespace Cards
 {
-    public interface LEGACY_ICard
+    public interface ICard
     {
 
         public string CardName { get; set; }

@@ -2,25 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
-using Cards.Json;
+using Cards.LEGACY_Json;
 using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Bout
 {
-    public class BoutController : MonoBehaviour
+    public class StageController : MonoBehaviour
     {
-        public TextAsset patternJson;
-        public GameObject cardsControllerObject, cardPrefab, battleCamera;
+        public List<TextAsset> patternJson;
+        public GameObject cardsControllerPrefab, cardPrefab;
 
-        private Card _cardPrefabData;
         private CardsController _cardsController;
         private GameObject _cardsControllerInstance;
         private readonly Dictionary<int, List<GameObject>> _allCardsPattern = new();
         private readonly Dictionary<GameObject, Card> _cardsToRetrieveFromObject = new();
     
         public int boutNumber;
-        public bool boutLost, boutVictory, canPassRound;
+        public bool boutLost, boutVictory, canStartNextRound;
         public float cameraVelocity;
         
         private Camera _camera;
@@ -30,19 +29,15 @@ namespace Bout
 
         private enum BoutStateEnum
         {
-            Introduction,
             Preparation,
             Battle,
         }
 
         private BoutStateEnum _boutState;
-
-        /// <summary>
-        /// Define the main camera who has MainCamera tag
-        /// </summary>
+        
         private void Awake()
         {
-            _camera = battleCamera.GetComponent<Camera>();
+            DefineMainCamera();
         }
 
         /// <summary>
@@ -57,20 +52,35 @@ namespace Bout
 
         private void Update()
         {
-            if (_boutState == BoutStateEnum.Introduction)
+            DefineBoutState();
+        }
+
+        private void DefineBoutState()
+        {
+            switch (_boutState)
             {
-                MoveUntilCoordinate(transform.position);
+                case BoutStateEnum.Preparation:
+                    /* Show a new GUI to choose the Type */
+                    // -- TEST -- //
+                    canStartNextRound = true;
+                    _boutState = BoutStateEnum.Battle;
+                    // -- TEST -- //
+                    break;
+                case BoutStateEnum.Battle:
+                    if (canStartNextRound)
+                    {
+                        StartNextRound();
+                    }
+                    break;
             }
-            
-            if (_boutState == BoutStateEnum.Preparation)
-            {
-                
-            }
-        
-            if (canPassRound && _boutState == BoutStateEnum.Battle)
-            {
-                StartNextRound();
-            }
+        }
+
+        /// <summary>
+        /// Define the main camera who has "MainCamera" tag
+        /// </summary>
+        private void DefineMainCamera()
+        {
+            _camera = Camera.main;
         }
         
         /// <summary>
@@ -79,24 +89,25 @@ namespace Bout
         private void DefineMonsterCardsPattern()
         {
             cardPrefab.SetActive(false);
-            _cardPrefabData = cardPrefab.GetComponent<Card>();
-            var patterns = JsonConvert.DeserializeObject<JsonPattern>(patternJson.text);
+            var patterns = JsonConvert.DeserializeObject<JsonCardsPattern>(patternJson[0].text);
             foreach (var pattern in patterns.Patterns)
             {
                 var list = new List<GameObject>();
                 foreach (var cardData in pattern.Value)
                 {
+                    var cardInstance = Instantiate(cardPrefab);
+                    var cardInstanceData = cardInstance.GetComponent<Card>();
                     if (!Enum.TryParse<ICard.TypeEnum>(cardData.Type, out var type)) return;
-                    (_cardPrefabData.CardName, _cardPrefabData.Force, _cardPrefabData.Type) 
+                    (cardInstanceData.CardName, cardInstanceData.Force, cardInstanceData.Type) 
                         = (cardData.CardName, cardData.Force, type);
-                    _cardsToRetrieveFromObject.Add(cardPrefab, _cardPrefabData);
-                    list.Add(cardPrefab);
+                    _cardsToRetrieveFromObject.Add(cardInstance, cardInstanceData);
+                    list.Add(cardInstance);
+                    Destroy(cardInstance);
                 }
-                
                 _allCardsPattern.Add(int.Parse(pattern.Key), list);
             }
-            
-            var cardsControllerInstance = Instantiate(cardsControllerObject, transform.position + new Vector3(0,-1f,3) , Quaternion.identity);
+
+            var cardsControllerInstance = Instantiate(cardsControllerPrefab, transform.position + new Vector3(0,-1f,3) , Quaternion.identity);
             _cardsController = cardsControllerInstance.GetComponent<CardsController>();
         }
 
@@ -128,9 +139,9 @@ namespace Bout
             _roundCount++;
             
             // Define cardsPattern of the cards controller based on the roundCount value and replace cards
-            var replacementCards = _allCardsPattern[_roundCount].Select(cardObject => _cardsToRetrieveFromObject[cardObject]).ToList();
-            StartCoroutine(_cardsController.ChangeCards(replacementCards));
-            canPassRound = false;
+            var replacementCardsData = _allCardsPattern[_roundCount].Select(cardObject => _cardsToRetrieveFromObject[cardObject]).ToList();
+            StartCoroutine(_cardsController.ChangeCards(replacementCardsData));
+            canStartNextRound = false;
         }
     }
 }

@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 namespace Scene
 {
-    public class StageController: MonoBehaviour
+    public class StageManager: MonoBehaviour
     {
         
+        
+        private void Start()
+        {
+            
+        }
     }
 }

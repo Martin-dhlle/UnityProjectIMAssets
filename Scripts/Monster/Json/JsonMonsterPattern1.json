@@ -1,7 +1,9 @@
 {
   "monsterPattern1": {
     "1": {
-      "Type": "Thrust"
+      "Type": "Thrust",
+      "Force": 50,
+      "QTE": 5
     },
     "2": 
     {

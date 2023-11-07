@@ -1,21 +1,20 @@
 using System.Collections.Generic;
 
-namespace Cards.Json
+namespace Monster.Json
 {
-    public class JsonCardsPattern
+    public class JsonMonsterPattern
     {
-        public readonly Dictionary<string, JsonCard[]> Patterns;
+        public readonly Dictionary<string, JsonMonster> Patterns;
 
-        public JsonCardsPattern(Dictionary<string, JsonCard[]> patterns)
+        public JsonMonsterPattern(Dictionary<string, JsonMonster> patterns)
         {
             Patterns = patterns;
         }
     }
     
-    public class JsonCard
+    public class JsonMonster
     {
-        public string CardName;
-        public int Force;
         public string Type;
+        public int Force;
     }
 }

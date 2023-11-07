@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Cards.Json
+namespace Cards.LEGACY_Json
 {
     public class JsonCardsPattern
     {
