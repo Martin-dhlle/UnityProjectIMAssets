@@ -11,7 +11,14 @@ namespace Scene
         public GameObject cardPrefab;
         public int[] forceInit;
         
-        private Dictionary<GameObject, Card> _cards = new();
+        private readonly Dictionary<GameObject, Card> _cards = new();
+        private readonly Dictionary<GameObject, Animator> _cardsAnimator = new();
+        
+        // Animation types for a single card
+        public enum SingleAnimationTypeEnum {Focus, Disappear}
+        
+        // Animation types for many cards
+        public enum AnimationTypeEnum {Disappear}
         
         private void Awake()
         {
@@ -41,6 +48,16 @@ namespace Scene
         private GameObject[] GetAllCards()
         {
             return _cards.Keys.ToArray();
+        }
+
+        private void AnimateSingle(GameObject key, SingleAnimationTypeEnum animationType)
+        {
+            
+        }
+
+        private void AnimateMany(AnimationTypeEnum animationType)
+        {
+            
         }
     }
 }
