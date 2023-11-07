@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace Cards.Json
 {
-    public class JsonPattern
+    public class JsonCardsPattern
     {
         public readonly Dictionary<string, JsonCard[]> Patterns;
 
-        public JsonPattern(Dictionary<string, JsonCard[]> patterns)
+        public JsonCardsPattern(Dictionary<string, JsonCard[]> patterns)
         {
             Patterns = patterns;
         }

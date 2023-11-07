@@ -1,0 +1,16 @@
+{
+  "monsterPattern1": {
+    "1": {
+      "Type": "Thrust"
+    },
+    "2": 
+    {
+      "Type": "Slash"
+    }
+    ,
+    "3": 
+    {
+      "Type": "Bash"
+    }
+  }  
+}

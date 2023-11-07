@@ -1,6 +1,6 @@
 ﻿namespace Cards
 {
-    public interface ICard
+    public interface LEGACY_ICard
     {
 
         public string CardName { get; set; }
@@ -13,7 +13,8 @@
         {
             Thrust,
             Slash,
-            Bash
+            Bash,
+            
         }
 
     }

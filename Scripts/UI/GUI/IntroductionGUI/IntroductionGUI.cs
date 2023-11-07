@@ -1,26 +1,26 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
-namespace UI.start_splashscreen
+namespace UI.GUI.SplashScreen
 {
     public class SplashScreenController : MonoBehaviour
     {
-        public GameObject  firstSplashScreen, secondSplashScreen, introductionCamera;
+        public GameObject  firstSplashScreen, secondSplashScreen;
         public AudioClip step1, step2;
+        public bool isIntroOver;
 
+        private GameObject _camera;
         private Animator _cameraAnimator;
         private AudioSource _audioSource;
         private Renderer _rend;
         private static readonly int CanMove = Animator.StringToHash("canMove");
 
-        // Start is called before the first frame update
-
         private void Awake()
         {
-            _cameraAnimator = introductionCamera.GetComponent<Animator>();
+            _cameraAnimator = _camera.GetComponent<Animator>();
             _audioSource = GetComponent<AudioSource>();
             _rend = GetComponent<Renderer>();
+            
             firstSplashScreen.SetActive((false));
             secondSplashScreen.SetActive((false));
         }
@@ -35,11 +35,11 @@ namespace UI.start_splashscreen
             yield return new WaitForSeconds(2);
             firstSplashScreen.SetActive((true));
             _audioSource.PlayOneShot(step1); // play monster footstep sound
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(3);
             firstSplashScreen.SetActive((false));
             secondSplashScreen.SetActive((true));
             _audioSource.PlayOneShot(step2); // play another monster footstep sound
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(2);
             var matColor = _rend.material.color;
             // transition fading splashscreen background
             _cameraAnimator.SetBool(CanMove, true);
@@ -51,7 +51,8 @@ namespace UI.start_splashscreen
                 _rend.material.color = matColor;
                 yield return new WaitForSeconds(0.1f);
             }
-            yield break;
+            yield return new WaitForSeconds(20);
+            isIntroOver = true;
         }
     }
 }

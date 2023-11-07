@@ -1,15 +1,14 @@
-using System;
 using TMPro;
 using UnityEngine;
 
 namespace Cards
 {
-    public class Card : MonoBehaviour, ICard
+    public class LegacyICard : MonoBehaviour, LEGACY_ICard
     {
         public TMP_Text textCardName,textForce, textType;
         public string CardName { get; set; } = "default";
         public int Force { get; set; }
-        public ICard.TypeEnum Type { get; set; }
+        public LEGACY_ICard.TypeEnum Type { get; set; }
 
         private void Start()
         {
