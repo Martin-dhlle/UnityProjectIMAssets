@@ -1,5 +1,4 @@
 using System;
-using UI.GUI.IntroductionGUI;
 using UnityEngine;
 
 namespace Scene

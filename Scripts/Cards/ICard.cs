@@ -12,5 +12,9 @@
             Slash,
             Bash,
         }
+
+        public void AddForce(int force);
+
+        public void ChangeType(TypeEnum type);
     }
 }
