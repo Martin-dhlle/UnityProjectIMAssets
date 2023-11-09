@@ -28,7 +28,7 @@ namespace Scene
 
         /// <summary>
         /// Instantiate all cards by type.
-        /// Cards are not active and are instantiate with the main camera as the transform parent.
+        /// Cards are not active and are instantiate first with the main camera as the transform parent.
         /// </summary>
         private void InstantiateAllCards()
         {
@@ -58,6 +58,7 @@ namespace Scene
             {
                 card.Key.transform.position = centerPointSpawn;
                 card.Key.transform.localPosition += Vector3.right * incrementVector;
+                card.Key.transform.localRotation = Quaternion.identity * Quaternion.Euler(-90,0,-90);
                 card.Key.SetActive(true);
                 incrementVector += 0.9f;
             }
@@ -86,12 +87,13 @@ namespace Scene
             }
         }
 
-        public IEnumerator AnimateManyAsync(AnimationTypeEnum animationType, int timeInSecond)
+        public IEnumerator AnimateManyAsync(AnimationTypeEnum animationType, float delayBetweenInSeconds, float? delayBeforeInSeconds = null)
         {
+            yield return new WaitForSeconds(delayBeforeInSeconds ?? 0);
             foreach (var cAnimator in _cardsAnimator)
             {
                 cAnimator.Value.SetBool($"can{animationType.ToString()}", true);
-                yield return new WaitForSeconds(timeInSecond);
+                yield return new WaitForSeconds(delayBetweenInSeconds);
             }
         }
     }

@@ -48,10 +48,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2992832824474316691, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
+      propertyPath: m_Name
+      value: progressBarWrapper
+      objectReference: {fileID: 0}
     - target: {fileID: -2675826441547493790, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ead9a0b6cf16849499e9ed7673ea3581, type: 2}
+    - target: {fileID: -744831684004933992, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -744831684004933992, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0038
+      objectReference: {fileID: 0}
+    - target: {fileID: -744831684004933992, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 127619702191029230, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -86,11 +102,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressValue: 0
+  maxProgressValue: 0
+  minYPos: 0
+  maxYPos: 0
   startColor: {r: 0.18544681, g: 0.8584906, b: 0.06074225, a: 0}
   endColor: {r: 1, g: 0.0141509175, b: 0.0141509175, a: 0}
-  progressBarDeformer: {fileID: 6721785355969109611}
+  progressBarDeform: {fileID: 6721785355969109611}
+  progressBar: {fileID: 7817903786194901190}
 --- !u!4 &6721785355969109611 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -744831684004933992, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
+  m_PrefabInstance: {fileID: 2945714441638383859}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7817903786194901190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4944813577103738933, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
   m_PrefabInstance: {fileID: 2945714441638383859}
   m_PrefabAsset: {fileID: 0}

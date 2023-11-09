@@ -46,6 +46,7 @@ namespace UI.GUI.IntroductionGUI
 
         private IEnumerator StartIntroduction()
         {
+            _cameraAnimator.applyRootMotion = false;
             yield return new WaitForSeconds(2);
             firstSplashScreen.SetActive((true));
             _audioSource.PlayOneShot(step1); // play monster footstep sound

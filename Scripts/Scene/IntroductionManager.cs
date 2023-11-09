@@ -1,3 +1,4 @@
+using System;
 using UI.GUI.IntroductionGUI;
 using UnityEngine;
 
@@ -7,8 +8,7 @@ namespace Scene
     {
         private SceneController _sceneController;
         
-        public Transform coordinatesToEndIntro;
-        public GameObject introductionGUI;
+        [SerializeField] private GameObject introductionGUI;
         
         private IntroductionGUI _introductionGUIController;
         private Camera _camera;
@@ -17,8 +17,12 @@ namespace Scene
         {
             _camera = Camera.main;
             _sceneController = GetComponent<SceneController>();
+        }
+
+        private void Start()
+        {
             _introductionGUIController = HelperScripts.UI.InstantiateGUI<IntroductionGUI>(introductionGUI, _camera);
-            _introductionGUIController.CoordinatesToEndIntro = coordinatesToEndIntro;
+            _introductionGUIController.CoordinatesToEndIntro = _sceneController.coordinatesToEndIntro;
         }
 
         private void Update()
@@ -29,8 +33,7 @@ namespace Scene
         private void CheckIntroductionState()
         {
             if (!_introductionGUIController.isIntroOver) return;
-            _sceneController.canSwitchState = true;
-            _sceneController.sceneState++;
+            _sceneController.SwitchSceneState(SceneController.ScenePhaseEnum.Stage1);
         }
     }
 }

@@ -155,8 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad072fe3a5594e62a9565d2d1244997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneState: 0
-  canSwitchState: 0
+  coordinatesToEndIntro: {fileID: 1734798361}
+  initialScenePhase: 2
 --- !u!4 &135066286
 Transform:
   m_ObjectHideFlags: 0
@@ -184,7 +184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665b458fcb0044afbcc20c030de58169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordinatesToEndIntro: {fileID: 1734798361}
   introductionGUI: {fileID: 7551133976121677736, guid: d1e3dfd51874445d0994a426feebdcd5, type: 3}
 --- !u!114 &135066289
 MonoBehaviour:
@@ -199,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleGUI: {fileID: 4428421788423460015, guid: d99235cc112bd43608fbb35c113d135c, type: 3}
+  monster: {fileID: 1642336450}
 --- !u!114 &135066290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +284,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6238524380018918788, guid: 731a080f3072641ea8026131ea918a7b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1642336452}
+    - targetCorrespondingSourceObject: {fileID: 6238524380018918788, guid: 731a080f3072641ea8026131ea918a7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1642336454}
   m_SourcePrefab: {fileID: 100100000, guid: 731a080f3072641ea8026131ea918a7b, type: 3}
 --- !u!1001 &186297521
 PrefabInstance:
@@ -545,7 +548,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 4e53fd7c2ea3741328fe7974da3eb398, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -579,6 +582,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1642336454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642336450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e1d6db990bf4b6d901cd43e78dae133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patternList:
+  - {fileID: 4900000, guid: 6bf6981ffdcb4cc2984cafe22989caae, type: 3}
 --- !u!1 &1734798360
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,9 +2,9 @@
 {
     public interface ICard
     {
-        public int Force { get; set; }
+        public int Force { get; }
         
-        public TypeEnum Type { get; set; }
+        public TypeEnum Type { get; }
 
         public enum TypeEnum
         {

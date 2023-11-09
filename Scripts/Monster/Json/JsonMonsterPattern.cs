@@ -4,17 +4,18 @@ namespace Monster.Json
 {
     public class JsonMonsterPattern
     {
-        public readonly Dictionary<string, JsonMonster> Patterns;
+        public readonly Dictionary<int, JsonMonsterData> Patterns;
 
-        public JsonMonsterPattern(Dictionary<string, JsonMonster> patterns)
+        public JsonMonsterPattern(Dictionary<int, JsonMonsterData> patterns)
         {
             Patterns = patterns;
         }
     }
     
-    public class JsonMonster
+    public class JsonMonsterData
     {
         public string Type;
         public int Force;
+        public int Qte;
     }
 }

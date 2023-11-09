@@ -5,12 +5,13 @@ namespace Scene
 {
     public class SceneController : MonoBehaviour
     {
+        public Transform coordinatesToEndIntro;
+        
         private IntroductionManager _introductionManager;
         private StageManager _stageManager;
         
-        public enum SceneStateEnum {Introduction, Preparation, Stage1, Stage2, BadEnd, HappyEnd}
-        public SceneStateEnum sceneState = SceneStateEnum.Introduction;
-        public bool canSwitchState;
+        public enum ScenePhaseEnum {Introduction, Preparation, Stage1, Stage2, BadEnd, HappyEnd}
+        [SerializeField] private ScenePhaseEnum initialScenePhase;
 
         private void Awake()
         {
@@ -18,42 +19,42 @@ namespace Scene
             _stageManager = GetComponent<StageManager>();
         }
 
+        /// <summary>
+        /// At the start of the game, we set the scene state to the initial scene state defined
+        /// in unity inspector
+        /// </summary>
         private void Start()
         {
-            canSwitchState = true;
+            SwitchSceneState(initialScenePhase);
         }
 
-        private void Update()
+        public void SwitchSceneState(ScenePhaseEnum state)
         {
-            if(canSwitchState) SwitchState();
-        }
-        
-        private void SwitchState()
-        {
-            switch (sceneState)
+            switch (state)
             {
-                case SceneStateEnum.Introduction:
+                case ScenePhaseEnum.Introduction:
                     _introductionManager.enabled = true;
                     // some introduction stuff
                     break;
-                case SceneStateEnum.Stage1:
+                case ScenePhaseEnum.Stage1:
                     _introductionManager.enabled = false;
                     _stageManager.enabled = true;
                     break;
-                case SceneStateEnum.Preparation:
+                case ScenePhaseEnum.Preparation:
+                    _stageManager.enabled = false;
+                    // _preparationManager.enabled = true;
+                    // dont forget to set the main camera Animator "apply root motion" boolean to false
                     break;
-                case SceneStateEnum.Stage2:
+                case ScenePhaseEnum.Stage2:
                     break;
-                case SceneStateEnum.BadEnd:
+                case ScenePhaseEnum.BadEnd:
                     // some bad ending stuff
                     break;
-                case SceneStateEnum.HappyEnd:
+                case ScenePhaseEnum.HappyEnd:
                 // HAPPY ENDING !
                 default:
                     throw new NotImplementedException();
             }
-
-            canSwitchState = false;
         }
     }
 }

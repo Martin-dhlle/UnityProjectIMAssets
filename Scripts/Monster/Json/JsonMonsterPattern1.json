@@ -1,18 +1,62 @@
 {
-  "monsterPattern1": {
-    "1": {
+    "1": 
+    {
       "Type": "Thrust",
       "Force": 50,
       "QTE": 5
     },
     "2": 
     {
-      "Type": "Slash"
-    }
-    ,
+      "Type": "Slash",
+      "Force": 50,
+      "QTE": 5
+    },
     "3": 
     {
-      "Type": "Bash"
+      "Type": "Bash",
+      "Force": 50,
+      "QTE": 5
+    },
+    "4": 
+    {
+      "Type": "Thrust",
+      "Force": 50,
+      "QTE": 5
+    },
+    "5":
+    {
+      "Type": "Slash",
+      "Force": 50,
+      "QTE": 5
+    },
+    "6":
+    {
+      "Type": "Bash",
+      "Force": 50,
+      "QTE": 5
+    },
+    "7": 
+    {
+      "Type": "Thrust",
+      "Force": 50,
+      "QTE": 5
+    },
+    "8":
+    {
+      "Type": "Slash",
+      "Force": 50,
+      "QTE": 5
+    },
+    "9":
+    {
+      "Type": "Bash",
+      "Force": 50,
+      "QTE": 5
+    },
+    "10":
+    {
+      "Type": "Thrust",
+      "Force": 50,
+      "QTE": 5
     }
-  }  
 }

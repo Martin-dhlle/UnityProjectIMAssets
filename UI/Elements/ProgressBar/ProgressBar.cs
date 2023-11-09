@@ -1,14 +1,16 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI.Elements.ProgressBar
 {
     public class ProgressBar : MonoBehaviour
     {
-        public float progressValue, maxProgressValue, minYPos, maxYPos;
+        public float minYPos, maxYPos;
         public Color startColor, endColor;
-        public Transform progressBarDeformer;
-        public GameObject progressBar;
+        [SerializeField] private  Transform progressBarDeform;
+        [SerializeField] private GameObject progressBar;
 
         private Renderer _rend;
         private Color _currentColor;
@@ -19,25 +21,32 @@ namespace UI.Elements.ProgressBar
             _currentColor = _rend.material.color;
         }
 
-        private void Update()
+        private float PositionManagement(float currentProgressValue,float maxProgressValue)
         {
-            if (!(progressValue > 0)) return;
-            PositionManagement();
-            ColorManagement();
+            var progressInterpolation = Mathf.InverseLerp(0, maxProgressValue, currentProgressValue);
+            var pos = progressBarDeform.position;
+            pos.y = Mathf.Lerp(minYPos, maxYPos, progressInterpolation);
+            progressBarDeform.position = pos;
+            return progressInterpolation;
         }
 
-        private void PositionManagement()
+        private void ColorManagement(float currentLinearInterpolation)
         {
-            var progressFactor = Mathf.InverseLerp(0, maxProgressValue, progressValue);
-            var pos = progressBarDeformer.position;
-            pos.y = Mathf.Lerp(minYPos, minYPos, progressFactor);
-            progressBarDeformer.position = pos;
-        }
-
-        private void ColorManagement()
-        {
-            _currentColor = Color.Lerp(startColor, endColor, 1);
+            _currentColor = Color.Lerp(startColor, endColor, currentLinearInterpolation);
             _rend.material.color = _currentColor;
+        }
+        
+        public IEnumerator StartQteProgress(float maxSeconds)
+        {
+            float progressValue = 0;
+            for (var i = 0; i < maxSeconds; i++)
+            {
+                progressValue += Time.deltaTime;
+                var progressFactor = PositionManagement(progressValue, maxSeconds);
+                ColorManagement(progressFactor);
+                yield return null;
+            }
+            // declare defeat of the round
         }
     }
 }

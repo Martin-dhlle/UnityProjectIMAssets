@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace Bout
 {
-    public class StageController : MonoBehaviour
+    public class LegacyStageController : MonoBehaviour
     {
         public List<TextAsset> patternJson;
         public GameObject cardsControllerPrefab, cardPrefab;
 
-        private CardsController _cardsController;
+        private LegacyCardsController _legacyCardsController;
         private GameObject _cardsControllerInstance;
         private readonly Dictionary<int, List<GameObject>> _allCardsPattern = new();
         private readonly Dictionary<GameObject, Card> _cardsToRetrieveFromObject = new();
@@ -98,8 +98,8 @@ namespace Bout
                     var cardInstance = Instantiate(cardPrefab);
                     var cardInstanceData = cardInstance.GetComponent<Card>();
                     if (!Enum.TryParse<ICard.TypeEnum>(cardData.Type, out var type)) return;
-                    (cardInstanceData.Force, cardInstanceData.Type) 
-                        = (cardData.Force, type);
+                    /*(cardInstanceData.Force, cardInstanceData.Type) 
+                        = (cardData.Force, type);*/
                     _cardsToRetrieveFromObject.Add(cardInstance, cardInstanceData);
                     list.Add(cardInstance);
                     Destroy(cardInstance);
@@ -108,7 +108,7 @@ namespace Bout
             }
 
             var cardsControllerInstance = Instantiate(cardsControllerPrefab, transform.position + new Vector3(0,-1f,3) , Quaternion.identity);
-            _cardsController = cardsControllerInstance.GetComponent<CardsController>();
+            _legacyCardsController = cardsControllerInstance.GetComponent<LegacyCardsController>();
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Bout
             
             // Define cardsPattern of the cards controller based on the roundCount value and replace cards
             var replacementCardsData = _allCardsPattern[_roundCount].Select(cardObject => _cardsToRetrieveFromObject[cardObject]).ToList();
-            StartCoroutine(_cardsController.ChangeCards(replacementCardsData));
+            StartCoroutine(_legacyCardsController.ChangeCards(replacementCardsData));
             canStartNextRound = false;
         }
     }

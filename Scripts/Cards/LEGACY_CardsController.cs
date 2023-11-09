@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardsController : MonoBehaviour
+    public class LegacyCardsController : MonoBehaviour
     {
         public GameObject cardPrefab;
         public int cardsNumberInSet = 3;
@@ -73,8 +73,8 @@ namespace Cards
                 _cardsAnimatorsDict[cardData.Key].SetBool(IsSpawn, false);
                 
                 var replacementCard = replacementCardsData[index];
-                (cardData.Value.Force, cardData.Value.Type) = 
-                    (replacementCard.Force, replacementCard.Type);
+                /*(cardData.Value.Force, cardData.Value.Type) = 
+                    (replacementCard.Force, replacementCard.Type);*/
                 
                 _cardsAnimatorsDict[cardData.Key].SetBool(IsSpawn, true);
                 cardData.Key.SetActive(true);
