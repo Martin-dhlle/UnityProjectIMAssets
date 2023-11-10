@@ -14,12 +14,10 @@ namespace Scene
         
         private readonly Dictionary<GameObject, Card> _cards = new();
         private readonly Dictionary<GameObject, Animator> _cardsAnimator = new();
-        
-        // Animation types for a single card
-        public enum SingleAnimationTypeEnum {Focus, Disappear}
-        
-        // Animation types for many cards
-        public enum AnimationTypeEnum {Spawn, Disappear}
+        private static readonly int State = Animator.StringToHash("animationState");
+
+        // Animation types for cards
+        public enum AnimationTypeEnum {Disappear, Spawn, Focus}
         
         private void Awake()
         {
@@ -74,16 +72,21 @@ namespace Scene
             return _cards.Keys.ToArray();
         }
 
-        public void AnimateSingle(GameObject key, SingleAnimationTypeEnum animationType)
+        /// <summary>
+        /// Animate a card with chosen animation type by his gameObject key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="animationType"></param>
+        public void AnimateSingle(GameObject key, AnimationTypeEnum animationType)
         {
-            _cardsAnimator[key].SetBool($"can{animationType.ToString()}", true);
+            _cardsAnimator[key].SetInteger(State, (int)animationType);
         }
 
         public void AnimateMany(AnimationTypeEnum animationType)
         {
             foreach (var cAnimator in _cardsAnimator)
             {
-                cAnimator.Value.SetBool($"can{animationType.ToString()}", true);
+                cAnimator.Value.SetInteger(State, (int)animationType);
             }
         }
 
@@ -92,7 +95,7 @@ namespace Scene
             yield return new WaitForSeconds(delayBeforeInSeconds ?? 0);
             foreach (var cAnimator in _cardsAnimator)
             {
-                cAnimator.Value.SetBool($"can{animationType.ToString()}", true);
+                cAnimator.Value.SetInteger(State, (int)animationType);
                 yield return new WaitForSeconds(delayBetweenInSeconds);
             }
         }

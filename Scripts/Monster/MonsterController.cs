@@ -32,6 +32,11 @@ namespace Monster
             // set animator speed value from qte
             return qte;
         }
+        
+        public int GetForce(int currentRound)
+        {
+            return _jsonMonsterData[currentRound.ToString()].Qte;
+        }
 
         public ICard.TypeEnum GetAttackType(int currentRound)
         {
@@ -41,9 +46,9 @@ namespace Monster
         }
 
         /// <summary>
-        /// Random generation of pattern depending on stage number and json pattern
+        /// Random generation of a pattern, called every stages except the first one
         /// </summary>
-        public void SetJsonPatternByStage()
+        public void GeneratePattern()
         {
             
         }

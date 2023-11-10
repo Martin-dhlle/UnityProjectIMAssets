@@ -5,7 +5,6 @@ namespace UI.Elements.TextBoxes
 {
     public class Fade : MonoBehaviour
     {
-        public float delayInSecondBeforeFade;
         public float delayInSecondBetweenFadeFrame;
         private Renderer[] _renderers;
 
@@ -22,7 +21,7 @@ namespace UI.Elements.TextBoxes
         private IEnumerator FadeRenderers()
         {
             // animation
-            yield return new WaitForSeconds(delayInSecondBeforeFade);
+            yield return new WaitForSeconds(1);
             for (var time = 1; time < 10; time++)
             {
                 foreach (var rend in _renderers)

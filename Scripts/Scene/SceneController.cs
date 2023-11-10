@@ -30,6 +30,7 @@ namespace Scene
 
         public void SwitchSceneState(ScenePhaseEnum state)
         {
+            Debug.Log(state);
             switch (state)
             {
                 case ScenePhaseEnum.Introduction:

@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -18,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.000000056011
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -55,29 +59,34 @@ PrefabInstance:
     - target: {fileID: -2675826441547493790, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ead9a0b6cf16849499e9ed7673ea3581, type: 2}
+      objectReference: {fileID: 2100000, guid: c86d35009f6754cb9a79329bdca3fc58, type: 2}
     - target: {fileID: -744831684004933992, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -744831684004933992, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0038
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -744831684004933992, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 127619702191029230, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 127619702191029230, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c86d35009f6754cb9a79329bdca3fc58, type: 2}
+      objectReference: {fileID: 2100000, guid: ead9a0b6cf16849499e9ed7673ea3581, type: 2}
     - target: {fileID: 919132149155446097, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
       propertyPath: m_Name
       value: PREFAB_progressBar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -2992832824474316691, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e2459093f923f4fa9ab10af562551abd, type: 3}
@@ -101,11 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc210d6f064c49648410b0c6f7fb7db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressValue: 0
-  maxProgressValue: 0
   minYPos: 0
-  maxYPos: 0
-  startColor: {r: 0.18544681, g: 0.8584906, b: 0.06074225, a: 0}
+  maxYPos: 0.08
+  startColor: {r: 1, g: 1, b: 1, a: 0}
   endColor: {r: 1, g: 0.0141509175, b: 0.0141509175, a: 0}
   progressBarDeform: {fileID: 6721785355969109611}
   progressBar: {fileID: 7817903786194901190}
