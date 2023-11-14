@@ -15,7 +15,7 @@ namespace UI.GUI.IntroductionGUI
         private Animator _cameraAnimator;
         private AudioSource _audioSource;
         private Renderer _rend;
-        private static readonly int CanMove = Animator.StringToHash("canMove");
+        private static readonly int IsIntroduction = Animator.StringToHash("isIntroduction");
 
         private void Awake()
         {
@@ -50,14 +50,14 @@ namespace UI.GUI.IntroductionGUI
             yield return new WaitForSeconds(2);
             firstSplashScreen.SetActive((true));
             _audioSource.PlayOneShot(step1); // play monster footstep sound
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2);
             firstSplashScreen.SetActive((false));
             secondSplashScreen.SetActive((true));
             _audioSource.PlayOneShot(step2); // play another monster footstep sound
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             var matColor = _rend.material.color;
             // transition fading splashscreen background
-            _cameraAnimator.SetBool(CanMove, true);
+            _cameraAnimator.SetBool(IsIntroduction, true);
             yield return new WaitForSeconds(1);
             secondSplashScreen.SetActive((false));
             for (float time = 1; time < 10; time ++)

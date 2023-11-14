@@ -3,60 +3,70 @@
     {
       "Type": "Thrust",
       "Force": 50,
-      "QTE": 5
+      "QTE": 5,
+      "Fame": 10
     },
     "2": 
     {
       "Type": "Slash",
       "Force": 50,
-      "QTE": 5
+      "QTE": 5,
+      "Fame": 10
     },
     "3": 
     {
       "Type": "Bash",
       "Force": 50,
-      "QTE": 5
+      "QTE": 5,
+      "Fame": 10
     },
     "4": 
     {
       "Type": "Thrust",
       "Force": 50,
-      "QTE": 5
+      "QTE": 5,
+      "Fame": 10
     },
     "5":
     {
       "Type": "Slash",
       "Force": 50,
-      "QTE": 5
+      "QTE": 4,
+      "Fame": 10
     },
     "6":
     {
       "Type": "Bash",
       "Force": 50,
-      "QTE": 5
+      "QTE": 4,
+      "Fame": 10
     },
     "7": 
     {
       "Type": "Thrust",
       "Force": 50,
-      "QTE": 5
+      "QTE": 4,
+      "Fame": 10
     },
     "8":
     {
       "Type": "Slash",
       "Force": 50,
-      "QTE": 5
+      "QTE": 4,
+      "Fame": 10
     },
     "9":
     {
       "Type": "Bash",
       "Force": 50,
-      "QTE": 5
+      "QTE": 3,
+      "Fame": 10
     },
     "10":
     {
       "Type": "Thrust",
       "Force": 50,
-      "QTE": 5
+      "QTE": 3,
+      "Fame": 10
     }
 }

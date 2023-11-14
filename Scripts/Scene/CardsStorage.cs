@@ -11,6 +11,7 @@ namespace Scene
     {
         public GameObject cardPrefab;
         public int[] forceInit;
+        public int playerFame;
         
         private readonly Dictionary<GameObject, Card> _cards = new();
         private readonly Dictionary<GameObject, Animator> _cardsAnimator = new();
@@ -22,6 +23,15 @@ namespace Scene
         private void Awake()
         {
             InstantiateAllCards();
+        }
+
+        /// <summary>
+        /// Get all cards classes running
+        /// </summary>
+        /// <returns>A list of cards</returns>
+        public List<Card> GetAllCards()
+        {
+            return _cards.Values.ToList();
         }
 
         /// <summary>
@@ -62,14 +72,34 @@ namespace Scene
             }
         }
 
+        /// <summary>
+        /// Disable all cards gameObject on the scene
+        /// </summary>
+        public void DespawnAllCards()
+        {
+            foreach (var card in _cards)
+            {
+                card.Key.SetActive(false);
+            }
+        }
+        
+        public void RespawnAllCards()
+        {
+            foreach (var card in _cards)
+            {
+                card.Value.UpdateText();
+                card.Key.SetActive(true);
+            }
+        }
+
+        public int GetCardForce(GameObject card)
+        {
+            return _cards[card].Force;
+        }
+        
         public void AddForceToSingleCard(GameObject key, int forceToAdd)
         {
             _cards[key].AddForce(forceToAdd);
-        }
-
-        public GameObject[] GetAllCards()
-        {
-            return _cards.Keys.ToArray();
         }
 
         /// <summary>
@@ -98,6 +128,16 @@ namespace Scene
                 cAnimator.Value.SetInteger(State, (int)animationType);
                 yield return new WaitForSeconds(delayBetweenInSeconds);
             }
+        }
+
+        public void AddPlayerFame(int fameFromPattern)
+        {
+            playerFame += fameFromPattern;
+        }
+
+        public ICard.TypeEnum GetCardType(GameObject card)
+        {
+            return _cards[card].Type;
         }
     }
 }

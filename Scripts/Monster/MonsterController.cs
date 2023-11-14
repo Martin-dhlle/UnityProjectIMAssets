@@ -38,19 +38,26 @@ namespace Monster
             return _jsonMonsterData[currentRound.ToString()].Qte;
         }
 
+        public int GetFame(int currentRound)
+        {
+            return _jsonMonsterData[currentRound.ToString()].Fame;
+        }
+
         public ICard.TypeEnum GetAttackType(int currentRound)
         {
             return Enum.TryParse<ICard.TypeEnum>(_jsonMonsterData[currentRound.ToString()].Type, out var result) 
                 ? result
                 : ICard.TypeEnum.Bash;
         }
+        
+        
 
         /// <summary>
         /// Random generation of a pattern, called every stages except the first one
         /// </summary>
         public void GeneratePattern()
         {
-            
+            _jsonMonsterData = JsonConvert.DeserializeObject<Dictionary<string, JsonMonsterData>>(patternList[0/*replace 0 by random value*/].text);
         }
     }
 }

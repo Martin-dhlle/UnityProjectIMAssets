@@ -3,12 +3,17 @@ using UnityEngine;
 
 namespace Scene
 {
+    /// <summary>
+    /// The main controller of the game, manage active states of IntroductionManager, StageManager
+    /// and PreparationManager
+    /// </summary>
     public class SceneController : MonoBehaviour
     {
         public Transform coordinatesToEndIntro;
         
         private IntroductionManager _introductionManager;
         private StageManager _stageManager;
+        private PreparationManager _preparationManager;
         
         public enum ScenePhaseEnum {Introduction, Preparation, Stage1, Stage2, BadEnd, HappyEnd}
         [SerializeField] private ScenePhaseEnum initialScenePhase;
@@ -17,6 +22,10 @@ namespace Scene
         {
             _introductionManager = GetComponent<IntroductionManager>();
             _stageManager = GetComponent<StageManager>();
+            _preparationManager = GetComponent<PreparationManager>();
+
+            (_introductionManager.enabled, _stageManager.enabled, _preparationManager.enabled) 
+                = (false, false, false);
         }
 
         /// <summary>
@@ -25,13 +34,13 @@ namespace Scene
         /// </summary>
         private void Start()
         {
-            SwitchSceneState(initialScenePhase);
+            SwitchScenePhase(initialScenePhase);
         }
 
-        public void SwitchSceneState(ScenePhaseEnum state)
+        public void SwitchScenePhase(ScenePhaseEnum phase)
         {
-            Debug.Log(state);
-            switch (state)
+            Debug.Log($"current phase{phase}");
+            switch (phase)
             {
                 case ScenePhaseEnum.Introduction:
                     _introductionManager.enabled = true;
@@ -42,9 +51,8 @@ namespace Scene
                     _stageManager.enabled = true;
                     break;
                 case ScenePhaseEnum.Preparation:
+                    _preparationManager.enabled = true;
                     _stageManager.enabled = false;
-                    // _preparationManager.enabled = true;
-                    // dont forget to set the main camera Animator "apply root motion" boolean to false
                     break;
                 case ScenePhaseEnum.Stage2:
                     break;

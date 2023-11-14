@@ -6,7 +6,7 @@ using Cards.LEGACY_Json;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Bout
+namespace LEGACY_Bout
 {
     public class LegacyStageController : MonoBehaviour
     {

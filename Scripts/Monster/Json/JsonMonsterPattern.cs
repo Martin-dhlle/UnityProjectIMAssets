@@ -17,5 +17,6 @@ namespace Monster.Json
         public string Type;
         public int Force;
         public int Qte;
+        public int Fame;
     }
 }

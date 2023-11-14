@@ -1,4 +1,6 @@
 using System.Collections;
+using Cards;
+using TMPro;
 using UI.Elements.ProgressBar;
 using UnityEngine;
 
@@ -8,7 +10,8 @@ namespace UI.GUI.BattleGUI
     {
         public bool qteIsOver;
         public Transform placeholder;
-        
+
+        [SerializeField] private TextMeshPro logText;
         private ProgressBar _progressBar;
 
         private void Awake()
@@ -16,12 +19,18 @@ namespace UI.GUI.BattleGUI
             _progressBar = GetComponentInChildren<ProgressBar>();
         }
 
+        public void StartQte(float maxSeconds, float? delay = null)
+        {
+            StartCoroutine(StartQteAsync(maxSeconds, delay));
+        }
+
         public void DisableQteProgressBar()
         {
+            StopAllCoroutines();
             _progressBar.gameObject.SetActive(false);
         }
         
-        public IEnumerator StartQte(float maxSeconds, float? delay = null)
+        public IEnumerator StartQteAsync(float maxSeconds, float? delay = null)
         {
             float progressValue = 0;
             yield return new WaitForSeconds(delay ?? 0);
@@ -29,11 +38,16 @@ namespace UI.GUI.BattleGUI
             while (progressValue < maxSeconds)
             {
                 progressValue += Time.deltaTime;
-                var progressFactor = _progressBar.PositionManagement(progressValue, maxSeconds);
+                var progressFactor = _progressBar.PositionManagement(progressValue, maxSeconds, true);
                 _progressBar.ColorManagement(progressFactor);
                 yield return null;
             }
             qteIsOver = true;
+        }
+
+        public void WriteLog(int round, ICard.TypeEnum monsterAttackType, int monsterForce)
+        {
+            logText.text = $"round : {round},\n attack : {monsterAttackType},\n force : {monsterForce}";
         }
     }
 }

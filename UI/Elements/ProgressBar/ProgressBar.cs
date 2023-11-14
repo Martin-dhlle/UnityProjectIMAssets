@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace UI.Elements.ProgressBar
@@ -10,15 +11,15 @@ namespace UI.Elements.ProgressBar
         [SerializeField] private GameObject progressBar;
         private Renderer _rend;
 
-        private void Start()
+        private void Awake()
         {
             _rend = progressBar.GetComponent<Renderer>();
-            Debug.Log(_rend.material.color);
+            _rend.material.color = Color.gray;
         }
 
-        public float PositionManagement(float currentProgressValue,float maxProgressValue)
+        public float PositionManagement(float currentProgressValue, float maxProgressValue, bool isTimer = false)
         {
-            var progressInterpolation = 1 - Mathf.InverseLerp(0, maxProgressValue, currentProgressValue);
+            var progressInterpolation = isTimer ? 1 - Mathf.InverseLerp(0, maxProgressValue, currentProgressValue) : Mathf.InverseLerp(0, maxProgressValue, currentProgressValue);
             var pos = progressBarDeform.localPosition;
             pos.y = Mathf.Lerp(minYPos, maxYPos, progressInterpolation);
             progressBarDeform.localPosition = pos;

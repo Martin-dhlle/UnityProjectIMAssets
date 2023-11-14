@@ -1,4 +1,3 @@
-using System;
 using UI.GUI.IntroductionGUI;
 using UnityEngine;
 
@@ -33,7 +32,7 @@ namespace Scene
         private void CheckIntroductionState()
         {
             if (!_introductionGUIController.isIntroOver) return;
-            _sceneController.SwitchSceneState(SceneController.ScenePhaseEnum.Stage1);
+            _sceneController.SwitchScenePhase(SceneController.ScenePhaseEnum.Stage1);
         }
     }
 }

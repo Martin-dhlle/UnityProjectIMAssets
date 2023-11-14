@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Scene
 {
+    /// <summary>
+    /// All stages are managed here
+    /// </summary>
     public class StageManager: MonoBehaviour
     {
         private SceneController _sceneController;
@@ -17,6 +20,7 @@ namespace Scene
         private Camera _camera;
         private float _timer;
         private int _round, _stage = 1;
+        private bool _preventTouch;
         
         private void Awake()
         {
@@ -29,7 +33,7 @@ namespace Scene
         
         /// <summary>
         /// At the start of the first stage, force the camera to be at the coordinatesToEndIntro position,
-        /// then invoke after 2 seconds the InitializeStage method.
+        /// then invoke the InitializeStage method.
         /// </summary>
         private void Start()
         {
@@ -62,9 +66,8 @@ namespace Scene
         private void InitializeStage()
         {
             _battleGUIController = HelperScripts.UI.InstantiateGUI<BattleGUI>(battleGUI, _camera);
-            _battleGUIController.DisableQteProgressBar();
             _cardsStorage.SpawnAllCardsInScene(_battleGUIController.placeholder.position);
-            Invoke(nameof(StartNextRound), 1);
+            StartCoroutine(StartNextRound());
         }
         
         /// <summary>
@@ -78,20 +81,22 @@ namespace Scene
             if (touch.phase != TouchPhase.Began) return;
             
             var layer = 1 << LayerMask.NameToLayer("Card");
-            if (!Physics.Raycast(_camera.ScreenPointToRay(touch.position), out var hit, layer)) return;
+            if (_preventTouch || !Physics.Raycast(_camera.ScreenPointToRay(touch.position), out var hit, float.PositiveInfinity, layer)) return;
             
             var card = hit.transform.parent.gameObject;
             
+            _preventTouch = true;
+             if(!HelperScripts.CompareFunctions.CompareType(_cardsStorage.GetCardType(card), _monsterController.GetAttackType(_round)) || _cardsStorage.GetCardForce(card) < _monsterController.GetForce(_round))
+             {
+                 StartCoroutine(StartNextStage());
+                 return;
+             }
+             
             _cardsStorage.AnimateSingle(card, CardsStorage.AnimationTypeEnum.Focus);
+            _cardsStorage.AddPlayerFame(_monsterController.GetFame(_round));
+            /*_cardsStorage.AddForceToSingleCard(card, 10);*/
             
-            // _cardsStorage.AnimateSingle(card, CardsStorage.SingleAnimationTypeEnum.Focus);
-            /*
-             * if(_cardsStorage.getType(card) != monster.getType() || _cardsStorage.getForce(card) < monster.GetForce())
-             * {
-             *  StartNextStage()
-             * }
-             * 
-             */
+            StartCoroutine((StartNextRound()));
         }
         
         /// <summary>
@@ -99,15 +104,28 @@ namespace Scene
         /// If the round count is more than 10 then switch to Victory phase.
         /// Get the qte value and 
         /// </summary>
-        private void StartNextRound()
+        private IEnumerator StartNextRound()
         {
+            _battleGUIController.DisableQteProgressBar();
             _round++;
-            if(_round > 10) _sceneController.SwitchSceneState(SceneController.ScenePhaseEnum.HappyEnd);
+            if(_round > 10)
+            {
+                _sceneController.SwitchScenePhase(SceneController.ScenePhaseEnum.HappyEnd);
+                yield break;
+            }
+            _battleGUIController.WriteLog(_round, _monsterController.GetAttackType(_round), _monsterController.GetForce(_round));
+            yield return new WaitForSeconds(0.8f);
+            _cardsStorage.AnimateMany(CardsStorage.AnimationTypeEnum.Disappear);
+            yield return new WaitForSeconds(0.2f);
+            _cardsStorage.DespawnAllCards();
+            yield return new WaitForSeconds(0.5f);
+            _cardsStorage.RespawnAllCards();
+            _preventTouch = false;
             
             var qte = _monsterController.GetQte(_round);
             
             StartCoroutine(_cardsStorage.AnimateManyAsync(CardsStorage.AnimationTypeEnum.Spawn, 0.2f));
-            StartCoroutine(_battleGUIController.StartQte(qte, 1));
+            _battleGUIController.StartQte(qte, 1);
         }
         
         /// <summary>
@@ -119,8 +137,9 @@ namespace Scene
             _battleGUIController.DisableQteProgressBar();
             _cardsStorage.AnimateMany(CardsStorage.AnimationTypeEnum.Disappear);
             _battleGUIController.gameObject.SetActive(false);
-            _sceneController.SwitchSceneState(_stage > 2 ? SceneController.ScenePhaseEnum.BadEnd : SceneController.ScenePhaseEnum.Preparation);
-            yield return null;
+            yield return new WaitForSeconds(0.5f);
+            _cardsStorage.DespawnAllCards();
+            _sceneController.SwitchScenePhase(_stage > 2 ? SceneController.ScenePhaseEnum.BadEnd : SceneController.ScenePhaseEnum.Preparation);
         }
     }
 }
