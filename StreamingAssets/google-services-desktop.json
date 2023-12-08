@@ -1,0 +1,31 @@
+{
+  "project_info": {
+    "project_number": "199173223687",
+    "project_id": "cda-project-im",
+    "storage_bucket": "cda-project-im.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199173223687:ios:4299acdf72723d09c681a2",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.ProjectIM"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNdRm7H9AHKtVtHJPkMvS7lt1FWB9BIIs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 0
+        },
+        "appinvite_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

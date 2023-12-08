@@ -1,4 +1,5 @@
 using System.Collections;
+using Firebase;
 using Monster;
 using UI.GUI.BattleGUI;
 using UnityEngine;
@@ -19,8 +20,9 @@ namespace Scene
         
         private Camera _camera;
         private float _timer;
-        private int _round, _stage = 1;
         private bool _preventTouch;
+        
+        public int round, stage = 1;
         
         private void Awake()
         {
@@ -40,12 +42,13 @@ namespace Scene
             var cameraTransform = _camera.transform;
             cameraTransform.position = _sceneController.coordinatesToEndIntro.position;
             cameraTransform.rotation = _sceneController.coordinatesToEndIntro.rotation;
-            Invoke(nameof(InitializeStage), 1);
+            _battleGUIController = HelperScripts.UI.InstantiateGUI<BattleGUI>(battleGUI, _camera);
+            StartCoroutine(InitializeNewStage());
         }
 
         /// <summary>
         /// Watch the qte bool value from progressBar.
-        /// If it's true, then switch to the next stage.
+        /// If qte is over, then switch to the next stage.
         /// </summary>
         private void Update()
         {
@@ -60,13 +63,19 @@ namespace Scene
         }
 
         /// <summary>
-        /// At the start of the first stage, initialize the stage by instantiate
-        /// he UI and spawn all cards at the cards placeholder position.
+        /// Initialize the stage by instantiate the UI and spawn all cards at the cards placeholder position.
+        /// Set the round state to 0 and start a new round
         /// </summary>
-        private void InitializeStage()
+        public IEnumerator InitializeNewStage(bool randomPattern = false)
         {
-            _battleGUIController = HelperScripts.UI.InstantiateGUI<BattleGUI>(battleGUI, _camera);
+            if(randomPattern) _monsterController.GenerateRandomPattern();
+            round = 0;
+            _battleGUIController.gameObject.SetActive(true);
+            _battleGUIController.ShowAndFadeBackground();
+            yield return new WaitForSeconds(1.5f);
             _cardsStorage.SpawnAllCardsInScene(_battleGUIController.placeholder.position);
+            _monsterController.Animate(MonsterController.MonsterAnimationEnum.Meow);
+            StartCoroutine(_monsterController.PlayAudio(MonsterController.AudioEnum.Win));
             StartCoroutine(StartNextRound());
         }
         
@@ -81,23 +90,29 @@ namespace Scene
             if (touch.phase != TouchPhase.Began) return;
             
             var layer = 1 << LayerMask.NameToLayer("Card");
-            if (_preventTouch || !Physics.Raycast(_camera.ScreenPointToRay(touch.position), out var hit, float.PositiveInfinity, layer)) return;
+            if (_preventTouch || !Physics.Raycast(_camera.ScreenPointToRay(touch.position), out var hit,
+                       float.PositiveInfinity, layer)) return;
             
             var card = hit.transform.parent.gameObject;
             
             _preventTouch = true;
-             if(!HelperScripts.CompareFunctions.CompareType(_cardsStorage.GetCardType(card), _monsterController.GetAttackType(_round)) || _cardsStorage.GetCardForce(card) < _monsterController.GetForce(_round))
+             if(!HelperScripts.CompareFunctions.CompareType(_cardsStorage.GetCardType(card), 
+                    _monsterController.GetAttackType(round)) ||
+                _cardsStorage.GetCardForce(card) < _monsterController.GetForce(round))
              {
+                 _cardsStorage.AnimateSingle(card, CardsStorage.AnimationTypeEnum.MoveBottom);
+                 StartCoroutine(_monsterController.PlayAudio(MonsterController.AudioEnum.Win));
                  StartCoroutine(StartNextStage());
                  return;
              }
              
             _cardsStorage.AnimateSingle(card, CardsStorage.AnimationTypeEnum.Focus);
-            _cardsStorage.AddPlayerFame(_monsterController.GetFame(_round));
-            /*_cardsStorage.AddForceToSingleCard(card, 10);*/
-            
+            _cardsStorage.AddPlayerFame(_monsterController.GetFame(round));
+            StartCoroutine(_monsterController.PlayAudio(MonsterController.AudioEnum.Lose));
+            _monsterController.Animate(MonsterController.MonsterAnimationEnum.Default);
             StartCoroutine((StartNextRound()));
         }
+        
         
         /// <summary>
         /// Start the current round by increment the number of count and animate all cards.
@@ -107,22 +122,23 @@ namespace Scene
         private IEnumerator StartNextRound()
         {
             _battleGUIController.DisableQteProgressBar();
-            _round++;
-            if(_round > 10)
+            round++;
+            if(round > 10)
             {
                 _sceneController.SwitchScenePhase(SceneController.ScenePhaseEnum.HappyEnd);
                 yield break;
             }
-            _battleGUIController.WriteLog(_round, _monsterController.GetAttackType(_round), _monsterController.GetForce(_round));
+            var qte = _monsterController.GetQte(round);
+            _battleGUIController.WriteLog(round, _monsterController.GetAttackType(round), _monsterController.GetForce(round));
             yield return new WaitForSeconds(0.8f);
             _cardsStorage.AnimateMany(CardsStorage.AnimationTypeEnum.Disappear);
+            _monsterController.AnimateAttack(_monsterController.GetAttackType(round), qte);
             yield return new WaitForSeconds(0.2f);
             _cardsStorage.DespawnAllCards();
             yield return new WaitForSeconds(0.5f);
             _cardsStorage.RespawnAllCards();
             _preventTouch = false;
             
-            var qte = _monsterController.GetQte(_round);
             
             StartCoroutine(_cardsStorage.AnimateManyAsync(CardsStorage.AnimationTypeEnum.Spawn, 0.2f));
             _battleGUIController.StartQte(qte, 1);
@@ -134,12 +150,17 @@ namespace Scene
         /// </summary>
         private IEnumerator StartNextStage()
         {
+            var db = FirestoreDb.Init();
+            db?.AddDataToHistory(stage, round);
+            _monsterController.Animate(MonsterController.MonsterAnimationEnum.Move);
+            yield return new WaitForSeconds(0.4f);
             _battleGUIController.DisableQteProgressBar();
             _cardsStorage.AnimateMany(CardsStorage.AnimationTypeEnum.Disappear);
             _battleGUIController.gameObject.SetActive(false);
             yield return new WaitForSeconds(0.5f);
             _cardsStorage.DespawnAllCards();
-            _sceneController.SwitchScenePhase(_stage > 2 ? SceneController.ScenePhaseEnum.BadEnd : SceneController.ScenePhaseEnum.Preparation);
+            stage++;
+            _sceneController.SwitchScenePhase(stage > 2 ? SceneController.ScenePhaseEnum.BadEnd : SceneController.ScenePhaseEnum.Preparation);
         }
     }
 }

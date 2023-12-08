@@ -1,0 +1,92 @@
+{
+    "1": 
+    {
+      "AttackName": "Attaque de feu",
+      "ImagePath": "/slash.png",
+      "Type": "Slash",
+      "Force": 20,
+      "QTE": 5,
+      "Fame": 10
+    },
+    "2": 
+    {
+      "AttackName": "Attaque du chat",
+      "ImagePath": "/bash.png",
+      "Type": "Bash",
+      "Force": 30,
+      "QTE": 5,
+      "Fame": 10
+    },
+    "3": 
+    {
+      "AttackName": "Coup monstrueux",
+      "ImagePath": "/bash.png",
+      "Type": "Bash",
+      "Force": 50,
+      "QTE": 5,
+      "Fame": 10
+    },
+    "4": 
+    {
+      "AttackName": "Feinte",
+      "ImagePath": "",
+      "Type": "Thrust",
+      "Force": 20,
+      "QTE": 5,
+      "Fame": 10
+    },
+    "5":
+    {
+      "AttackName": "Esquive",
+      "ImagePath": "",
+      "Type": "Bash",
+      "Force": 40,
+      "QTE": 4,
+      "Fame": 10
+    },
+    "6":
+    {
+      "AttackName": "Coup du chat",
+      "ImagePath": "",
+      "Type": "Slash",
+      "Force": 20,
+      "QTE": 4,
+      "Fame": 10
+    },
+    "7": 
+    {
+      "AttackName": "Chat de feu",
+      "ImagePath": "",
+      "Type": "Bash",
+      "Force": 5,
+      "QTE": 4,
+      "Fame": 10
+    },
+    "8":
+    {
+      "AttackName": "MIAAAOOOU !!!",
+      "ImagePath": "",
+      "Type": "Slash",
+      "Force": 10,
+      "QTE": 4,
+      "Fame": 10
+    },
+    "9":
+    {
+      "AttackName": "Miaou",
+      "ImagePath": "",
+      "Type": "Slash",
+      "Force": 5,
+      "QTE": 3,
+      "Fame": 10
+    },
+    "10":
+    {
+      "AttackName": "Chat",
+      "ImagePath": "",
+      "Type": "Thrust",
+      "Force": 50,
+      "QTE": 3,
+      "Fame": 10
+    }
+}

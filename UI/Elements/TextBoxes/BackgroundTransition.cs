@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UI.Elements.TextBoxes
 {
-    public class Fade : MonoBehaviour
+    public class BackgroundTransition : MonoBehaviour
     {
         public float delayInSecondBetweenFadeFrame;
         private Renderer[] _renderers;
@@ -13,15 +13,20 @@ namespace UI.Elements.TextBoxes
             _renderers = GetComponentsInChildren<Renderer>();
         }
 
-        private void Start()
+         public void ResetRenderersAlpha()
         {
-            StartCoroutine(FadeRenderers());
+            foreach (var rend in _renderers)
+            {
+                var material = rend.material;
+                var materialColor = material.color;
+                materialColor.a = 1;
+                material.color = materialColor;
+            }
         }
 
-        private IEnumerator FadeRenderers()
+        public IEnumerator FadeRenderers()
         {
-            // animation
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
             for (var time = 1; time < 10; time++)
             {
                 foreach (var rend in _renderers)

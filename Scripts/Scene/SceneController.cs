@@ -1,5 +1,10 @@
 using System;
+using System.Collections;
+using System.Linq;
+using Firebase;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Firebase.Firestore;
 
 namespace Scene
 {
@@ -14,6 +19,8 @@ namespace Scene
         private IntroductionManager _introductionManager;
         private StageManager _stageManager;
         private PreparationManager _preparationManager;
+
+        private FirebaseFirestore _firestore;
         
         public enum ScenePhaseEnum {Introduction, Preparation, Stage1, Stage2, BadEnd, HappyEnd}
         [SerializeField] private ScenePhaseEnum initialScenePhase;
@@ -32,19 +39,20 @@ namespace Scene
         /// At the start of the game, we set the scene state to the initial scene state defined
         /// in unity inspector
         /// </summary>
-        private void Start()
+        private async void Start()
         {
-            SwitchScenePhase(initialScenePhase);
+            var db =  FirestoreDb.Init();
+            db.ConnectFirebaseFirestore();
+            var dataLength = (await db.GetHistoryDocumentsSnapshot()).Count();
+            SwitchScenePhase(dataLength > 0 ? ScenePhaseEnum.Stage1 : initialScenePhase);
         }
 
         public void SwitchScenePhase(ScenePhaseEnum phase)
         {
-            Debug.Log($"current phase{phase}");
             switch (phase)
             {
                 case ScenePhaseEnum.Introduction:
                     _introductionManager.enabled = true;
-                    // some introduction stuff
                     break;
                 case ScenePhaseEnum.Stage1:
                     _introductionManager.enabled = false;
@@ -55,15 +63,27 @@ namespace Scene
                     _stageManager.enabled = false;
                     break;
                 case ScenePhaseEnum.Stage2:
+                    _preparationManager.enabled = false;
+                    _stageManager.enabled = true;
+                    StartCoroutine(_stageManager.InitializeNewStage(true));
                     break;
                 case ScenePhaseEnum.BadEnd:
-                    // some bad ending stuff
+                    StartCoroutine(RestartGame());
                     break;
                 case ScenePhaseEnum.HappyEnd:
                 // HAPPY ENDING !
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        /// <summary>
+        /// --- TEST ---
+        /// </summary>
+        private static IEnumerator RestartGame()
+        {
+            yield return new WaitForSeconds(1);
+            SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

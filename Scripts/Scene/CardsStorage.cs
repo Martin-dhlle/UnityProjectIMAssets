@@ -18,7 +18,7 @@ namespace Scene
         private static readonly int State = Animator.StringToHash("animationState");
 
         // Animation types for cards
-        public enum AnimationTypeEnum {Disappear, Spawn, Focus}
+        public enum AnimationTypeEnum {Disappear, Spawn, Focus, MoveBottom}
         
         private void Awake()
         {
@@ -36,19 +36,18 @@ namespace Scene
 
         /// <summary>
         /// Instantiate all cards by type.
-        /// Cards are not active and are instantiate first with the main camera as the transform parent.
+        /// Cards are not active and are instantiate firstly with the main camera as the transform parent.
         /// </summary>
         private void InstantiateAllCards()
         {
-            cardPrefab.SetActive(false);
             for (var i = 0; i < ((ICard.TypeEnum[])Enum.GetValues(typeof(ICard.TypeEnum))).Length; i++)
             {
                 var cardInstance = Instantiate(cardPrefab, Camera.main!.transform);
                 var cardData = cardInstance.GetComponent<Card>();
-                var cardAnimator = cardInstance.GetComponent<Animator>();
+                var cardAnimator = cardInstance.GetComponentInChildren<Animator>();
                 
                 cardData.ChangeType((ICard.TypeEnum)i);
-                cardData.AddForce(forceInit[i]);
+                cardData.AddForce(forceInit[i], true);
                 
                 _cards.Add(cardInstance, cardData);
                 _cardsAnimator.Add(cardInstance, cardAnimator);
@@ -56,19 +55,23 @@ namespace Scene
         }
 
         /// <summary>
-        /// Define the new Vector3 for cards and activate cards game objects.
+        /// Define the new Vector3 center placeholder for cards and activate cards game objects.
         /// </summary>
         /// <param name="centerPointSpawn">The center where cards spawn</param>
-        public void SpawnAllCardsInScene(Vector3 centerPointSpawn)
+        /// <param name="size">The size of cards (1 by default)</param>
+        /// <param name="mode">The mode of cards</param>
+        public void SpawnAllCardsInScene(Vector3 centerPointSpawn, float size = 1, ICard.ModeEnum mode = ICard.ModeEnum.Battle)
         {
-            var incrementVector = -0.9f;
+            AnimateMany(AnimationTypeEnum.Disappear);
+            var incrementVector = -0.9f * size;
             foreach (var card in _cards)
             {
                 card.Key.transform.position = centerPointSpawn;
                 card.Key.transform.localPosition += Vector3.right * incrementVector;
-                card.Key.transform.localRotation = Quaternion.identity * Quaternion.Euler(-90,0,-90);
+                card.Key.transform.localScale *= size;
                 card.Key.SetActive(true);
-                incrementVector += 0.9f;
+                card.Value.SetCardMode(mode);
+                incrementVector += 0.9f * size;
             }
         }
 
@@ -97,9 +100,11 @@ namespace Scene
             return _cards[card].Force;
         }
         
-        public void AddForceToSingleCard(GameObject key, int forceToAdd)
+        public bool AddForceToSingleCard(GameObject key, int forceToAdd)
         {
+            if (_cards[key].Force + forceToAdd is > 150 or < 0) return false;
             _cards[key].AddForce(forceToAdd);
+            return true;
         }
 
         /// <summary>
@@ -130,9 +135,12 @@ namespace Scene
             }
         }
 
-        public void AddPlayerFame(int fameFromPattern)
+        public bool AddPlayerFame(int fameFromPattern)
         {
-            playerFame += fameFromPattern;
+            var result = playerFame + fameFromPattern;
+            if (result is > 150 or < 0) return false;
+            playerFame = result;
+            return true;
         }
 
         public ICard.TypeEnum GetCardType(GameObject card)

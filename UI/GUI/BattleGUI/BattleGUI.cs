@@ -2,6 +2,7 @@ using System.Collections;
 using Cards;
 using TMPro;
 using UI.Elements.ProgressBar;
+using UI.Elements.TextBoxes;
 using UnityEngine;
 
 namespace UI.GUI.BattleGUI
@@ -14,9 +15,13 @@ namespace UI.GUI.BattleGUI
         [SerializeField] private TextMeshPro logText;
         private ProgressBar _progressBar;
 
+        private BackgroundTransition _backgroundTransition;
+
         private void Awake()
         {
             _progressBar = GetComponentInChildren<ProgressBar>();
+            _progressBar.gameObject.SetActive(false);
+            _backgroundTransition = GetComponentInChildren<BackgroundTransition>();
         }
 
         public void StartQte(float maxSeconds, float? delay = null)
@@ -30,7 +35,7 @@ namespace UI.GUI.BattleGUI
             _progressBar.gameObject.SetActive(false);
         }
         
-        public IEnumerator StartQteAsync(float maxSeconds, float? delay = null)
+        private IEnumerator StartQteAsync(float maxSeconds, float? delay = null)
         {
             float progressValue = 0;
             yield return new WaitForSeconds(delay ?? 0);
@@ -43,6 +48,12 @@ namespace UI.GUI.BattleGUI
                 yield return null;
             }
             qteIsOver = true;
+        }
+        
+        public void ShowAndFadeBackground()
+        {
+            _backgroundTransition.ResetRenderersAlpha();
+            StartCoroutine(_backgroundTransition.FadeRenderers());
         }
 
         public void WriteLog(int round, ICard.TypeEnum monsterAttackType, int monsterForce)

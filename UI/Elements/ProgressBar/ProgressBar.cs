@@ -14,7 +14,7 @@ namespace UI.Elements.ProgressBar
         private void Awake()
         {
             _rend = progressBar.GetComponent<Renderer>();
-            _rend.material.color = Color.gray;
+            _rend.material.color = startColor;
         }
 
         public float PositionManagement(float currentProgressValue, float maxProgressValue, bool isTimer = false)
@@ -28,9 +28,9 @@ namespace UI.Elements.ProgressBar
 
         public void ColorManagement(float currentLinearInterpolation)
         {
-            var currentColor = Color.Lerp(startColor, endColor, currentLinearInterpolation);
+            var currentColor = Color.Lerp(endColor, startColor, currentLinearInterpolation);
             
-            /*_rend.material.color = currentColor;*/
+            _rend.material.color = currentColor;
         }
     }
 }

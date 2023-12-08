@@ -14,6 +14,8 @@ namespace Monster.Json
     
     public class JsonMonsterData
     {
+        public string AttackName;
+        public string ImagePath;    
         public string Type;
         public int Force;
         public int Qte;

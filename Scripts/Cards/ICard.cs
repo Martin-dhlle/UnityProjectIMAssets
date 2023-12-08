@@ -13,8 +13,10 @@
             Bash,
         }
 
-        public void AddForce(int force);
-
-        public void ChangeType(TypeEnum type);
+        public enum ModeEnum
+        {
+            Battle,
+            Edit
+        }
     }
 }
